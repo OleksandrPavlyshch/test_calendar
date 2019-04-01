@@ -77,6 +77,9 @@ export default {
 		}
 	},
 	props: {
+		/**
+    * Set is monday start day of the week.
+    */
 		startMonday: {
 			type: Boolean,
 			default: false,
@@ -109,16 +112,6 @@ export default {
 			this.isShowDropdown = false;
 		},
 	},
-	watch: {
-		diffMonth: function (val) {
-			console.log('===diffMonth====')
-			console.log(val);
-		},
-		currentMonth: function (val) {
-			console.log('===currentMonth====')
-			console.log(val);
-		},
-	},
 	computed: {
 		currentMonthName() {
 			return monthNames[this.currentMonth];
@@ -131,7 +124,6 @@ export default {
 			return weekDaysNames;
 		},
 		daysAtMonth() {
-			let now = new Date();
 			return new Date(this.currentYear, this.currentMonth+1, 0).getDate();
 		},
 		startGap(){
@@ -218,3 +210,11 @@ export default {
 		}
 	}
 </style>
+
+<docs>
+Calendar start from monday.
+### Calendar
+```jsx
+<calendar startMonday />
+```
+</docs>

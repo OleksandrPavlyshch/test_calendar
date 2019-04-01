@@ -1,5 +1,6 @@
 # test_calendar
 
+
 ## Project setup
 ```
 yarn install
@@ -23,6 +24,17 @@ yarn run test
 ### Lints and fixes files
 ```
 yarn run lint
+```
+## for style guide
+
+## Run npm run styleguide to start style a guide dev server.
+```
+npm run styleguide
+```
+
+## Run npm run styleguide:build to build a static version.
+```
+npm run styleguide:build
 ```
 
 ### Customize configuration
