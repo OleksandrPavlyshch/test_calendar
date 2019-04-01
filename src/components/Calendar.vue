@@ -1,12 +1,20 @@
 <template>
-	<div class="calendar border border-info rounded-pill d-inline-block my-4">
+	<div 
+		@click="dropdawnDisplayChange"
+		class="calendar border border-info rounded-pill d-inline-block my-4">
 
 		<div class="calendar-day py-2 px-3 d-inline-block text-info">
 			{{dayText}}
 		</div>
-		<div class="calendar-button py-2 px-3 d-inline-block bg-info shadow-lg">
+		<div 
+			class="calendar-button py-2 px-3 d-inline-block bg-info"
+			:class="{ 'shadow-lg': isShowDropdawn }">
 			<i class="far fa-calendar text-white"></i>
-			<div class="calendar-dropdawn p-3 shadow border">
+			<div 
+				@click.stop
+				v-if="isShowDropdawn"
+				class="calendar-dropdawn p-3 shadow border"
+				>
 				<div class="calendar-header">
 					<i 
 						@click="prevMonth"
@@ -27,7 +35,14 @@
 					</div>
 				</div>
 				<div class="calendar-dates">
-					<div class="calendar-dates-gap"></div>
+					<div 
+						v-if="startGap"
+						:style="{
+							'gridColumn': `1 / span ${startGap}`
+						}"
+						class="calendar-dates-gap">
+						<!-- {{startGap}} -->
+					</div>
 					<div 
 						v-for="(day, i) in daysAtMonth"
 						:key="day+i"
@@ -54,6 +69,7 @@ export default {
 		return {
 			dayText: 'today',
 			diffMonth: 0,
+			isShowDropdawn: false,
 			currentMonth: new Date().getMonth(),
 			currentYear: new Date().getFullYear(),
 		}
@@ -77,9 +93,12 @@ export default {
 			const now = new Date(),
 				thisYear = now.getFullYear(),
 				thisMonth = now.getMonth(),
-				thisDay = now.getDay();
+				thisDay = now.getDate();
 
 			return this.currentMonth === thisMonth && this.currentYear === thisYear && day === thisDay;
+		},
+		dropdawnDisplayChange() {
+			this.isShowDropdawn = !this.isShowDropdawn
 		},
 	},
 	watch: {
@@ -93,9 +112,6 @@ export default {
 		},
 	},
 	computed: {
-		// currentYear() {
-		// 	return new Date().getFullYear();
-		// },
 		currentMonthName() {
 			return monthNames[this.currentMonth];
 		},
@@ -109,6 +125,10 @@ export default {
 		daysAtMonth() {
 			let now = new Date();
 			return new Date(this.currentYear, this.currentMonth+1, 0).getDate();
+		},
+		startGap(){
+			let compensation = this.startMonday ? 1 : 0;
+			return new Date(this.currentYear, this.currentMonth, 1).getDay() - compensation;
 		}
 	}
 
@@ -145,10 +165,12 @@ export default {
 		}
 		&-week_days {
 			display:grid;
-			grid: auto-flow/ repeat(7, 1fr);
+			grid-template-columns: repeat(7, 1fr);
 			margin-bottom: .5em;
 		}
 		&-week_day {
+			min-width: 40px;
+			text-align: center;
 			padding: .4em;
 		}
 		&-month_change {
@@ -180,7 +202,9 @@ export default {
 				background-color: #ddd;
 			}
 			&.is-current {
-				color: $cyan;
+				color: white;
+				font-weight: 700;
+				background-color: $cyan;
 			}
 		}
 	}
