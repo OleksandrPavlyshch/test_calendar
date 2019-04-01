@@ -4,7 +4,11 @@
       <div class="col-12">
         <h1>Calendar</h1>
         <calendar
-        startMonday />
+        startMonday
+        @inputCalendar="inputCalendar" />
+      </div>
+      <div class="col-12 mt=3">
+        <h2>calendar set {{calendarResult}}</h2>
       </div>
     </div>
 
@@ -16,8 +20,19 @@ import Calendar from './components/Calendar.vue'
 
 export default {
   name: 'app',
+  data:  function() {
+    return {
+      calendarResult: '',
+    }
+  },
   components: {
     Calendar
+  },
+  methods: {
+    inputCalendar(val) {
+      this.calendarResult = val;
+      console.log(val);
+    },
   }
 }
 </script>

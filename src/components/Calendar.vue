@@ -47,6 +47,7 @@
 						v-for="(day, i) in daysAtMonth"
 						:key="day+i"
 						class="calendar-date"
+						@click='dayClickHandler(day)'
 						:class="{ 'is-current': isCurrentDay(day) }">
 						{{day}}
 					</div>
@@ -99,6 +100,12 @@ export default {
 		},
 		dropdawnDisplayChange() {
 			this.isShowDropdawn = !this.isShowDropdawn
+		},
+		dayClickHandler(day){
+			const dateText = `${day}.${this.currentMonth+1}.${this.currentYear}`;
+			this.dayText = dateText;
+			this.$emit('inputCalendar', dateText);
+			this.isShowDropdawn = false;
 		},
 	},
 	watch: {
@@ -154,6 +161,7 @@ export default {
 			background-color: #fff;
 			cursor: default;
 			font-size: .8em;
+			z-index: 10;
 		}
 		&-header {
 			display: flex;
