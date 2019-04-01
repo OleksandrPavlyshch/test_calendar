@@ -31,7 +31,8 @@
 					<div 
 						v-for="(day, i) in daysAtMonth"
 						:key="day+i"
-						class="calendar-date">
+						class="calendar-date"
+						:class="{ 'is-current': isCurrentDay(day) }">
 						{{day}}
 					</div>
 				</div>
@@ -45,7 +46,6 @@
 <script>
 	const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
 	const weekDaysNames = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
-	// const now = 
 
 
 export default {
@@ -55,6 +55,7 @@ export default {
 			dayText: 'today',
 			diffMonth: 0,
 			currentMonth: new Date().getMonth(),
+			currentYear: new Date().getFullYear(),
 		}
 	},
 	props: {
@@ -65,10 +66,20 @@ export default {
 	},
 	methods: {
 		nextMonth() {
+			this.currentYear = (this.currentMonth === 11) ? this.currentYear + 1 : this.currentYear;
 			this.currentMonth = (this.currentMonth + 1) % 12;
 		},
 		prevMonth() {
+			this.currentYear = (this.currentMonth === 0) ? this.currentYear - 1 : this.currentYear;
 			this.currentMonth = (this.currentMonth === 0) ? 11 : this.currentMonth - 1;
+		},
+		isCurrentDay(day) {
+			const now = new Date(),
+				thisYear = now.getFullYear(),
+				thisMonth = now.getMonth(),
+				thisDay = now.getDay();
+
+			return this.currentMonth === thisMonth && this.currentYear === thisYear && day === thisDay;
 		},
 	},
 	watch: {
@@ -82,9 +93,9 @@ export default {
 		},
 	},
 	computed: {
-		currentYear() {
-			return new Date().getFullYear();
-		},
+		// currentYear() {
+		// 	return new Date().getFullYear();
+		// },
 		currentMonthName() {
 			return monthNames[this.currentMonth];
 		},
@@ -167,6 +178,9 @@ export default {
 			background-color: #eee;
 			&:hover {
 				background-color: #ddd;
+			}
+			&.is-current {
+				color: $cyan;
 			}
 		}
 	}
