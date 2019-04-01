@@ -8,11 +8,11 @@
 		</div>
 		<div 
 			class="calendar-button py-2 px-3 d-inline-block bg-info"
-			:class="{ 'shadow-lg': isShowDropdawn }">
+			:class="{ 'shadow-lg': isShowDropdown }">
 			<i class="far fa-calendar text-white"></i>
 			<div 
 				@click.stop
-				v-if="isShowDropdawn"
+				v-if="isShowDropdown"
 				class="calendar-dropdawn p-3 shadow border"
 				>
 				<div class="calendar-header">
@@ -70,9 +70,10 @@ export default {
 		return {
 			dayText: 'today',
 			diffMonth: 0,
-			isShowDropdawn: false,
+			isShowDropdown: false,
 			currentMonth: new Date().getMonth(),
 			currentYear: new Date().getFullYear(),
+			selectedDate: new Date(),
 		}
 	},
 	props: {
@@ -91,21 +92,21 @@ export default {
 			this.currentMonth = (this.currentMonth === 0) ? 11 : this.currentMonth - 1;
 		},
 		isCurrentDay(day) {
-			const now = new Date(),
-				thisYear = now.getFullYear(),
-				thisMonth = now.getMonth(),
-				thisDay = now.getDate();
+			if (!this.selectedDate) return false;
 
-			return this.currentMonth === thisMonth && this.currentYear === thisYear && day === thisDay;
+			return this.currentMonth === this.selectedDate.getMonth()
+				&& this.currentYear === this.selectedDate.getFullYear() 
+				&& day === this.selectedDate.getDate() ;
 		},
 		dropdawnDisplayChange() {
-			this.isShowDropdawn = !this.isShowDropdawn
+			this.isShowDropdown = !this.isShowDropdown
 		},
 		dayClickHandler(day){
+			this.selectedDate = new Date(this.currentYear, this.currentMonth, day)
 			const dateText = `${day}.${this.currentMonth+1}.${this.currentYear}`;
 			this.dayText = dateText;
-			this.$emit('inputCalendar', dateText);
-			this.isShowDropdawn = false;
+			this.$emit('inputCalendar', this.selectedDate);
+			this.isShowDropdown = false;
 		},
 	},
 	watch: {

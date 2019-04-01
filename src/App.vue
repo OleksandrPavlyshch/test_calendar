@@ -29,9 +29,12 @@ export default {
     Calendar
   },
   methods: {
-    inputCalendar(val) {
-      this.calendarResult = val;
-      console.log(val);
+    inputCalendar(date) {
+      let dateStr = `${date.getDate()}.${(date.getMonth() + 1)}.${date.getFullYear()}`;
+
+      this.calendarResult = dateStr;
+      console.log('===get date from calendar===');
+      console.log(date);
     },
   }
 }
