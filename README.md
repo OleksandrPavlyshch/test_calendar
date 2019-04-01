@@ -25,14 +25,14 @@ yarn run test
 ```
 yarn run lint
 ```
-## for style guide
+## For style guide
 
-## Run npm run styleguide to start style a guide dev server.
+### Run npm run styleguide to start style a guide dev server.
 ```
 npm run styleguide
 ```
 
-## Run npm run styleguide:build to build a static version.
+### Run npm run styleguide:build to build a static version.
 ```
 npm run styleguide:build
 ```
